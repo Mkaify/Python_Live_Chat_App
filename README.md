@@ -7,5 +7,5 @@ Uses Flask Sockets to create a live chat room application.
 - pip install -r requirements.txt
 - python main.py
 
-# Feel free to add a pull request
-# Happy coding 😊
+## Feel free to add a pull request
+### Happy coding 😊
