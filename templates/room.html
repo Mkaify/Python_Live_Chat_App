@@ -1,43 +1,44 @@
 {% extends 'base.html' %} {% block content %}
-<div class="flex flex-col md:flex-row w-full h-screen md:h-[90vh] max-w-6xl mx-auto bg-white shadow-2xl overflow-hidden md:rounded-2xl border border-gray-100">
+<div class="flex flex-col md:flex-row w-full h-[100dvh] md:h-[90vh] max-w-6xl mx-auto bg-white shadow-2xl overflow-hidden md:rounded-2xl border border-gray-100">
   
-  <div class="w-full md:w-64 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col h-32 md:h-full">
-    <div class="p-4 md:p-6 border-b border-gray-200 bg-white flex justify-between items-center md:block">
-      <div>
-        <h3 class="text-sm md:text-lg font-bold text-gray-800">Users</h3>
-        <p class="text-xs md:text-sm text-gray-500"><span id="user-count">0</span> online</p>
-      </div>
-      <div class="md:hidden p-2 bg-gray-100 rounded text-[10px] font-mono uppercase">
-        Room: {{code}}
-      </div>
+  <div class="w-full md:w-64 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col shrink-0">
+    <div class="p-3 md:p-6 border-b border-gray-200 bg-white">
+      <h3 class="text-sm md:text-lg font-bold text-gray-800">Users</h3>
+      <p class="text-[10px] md:text-sm text-gray-500"><span id="user-count">0</span> online</p>
     </div>
-    <div id="user-list" class="flex-1 overflow-x-auto md:overflow-y-auto p-2 md:p-4 flex md:flex-col gap-2 items-center md:items-stretch">
+    <div id="user-list" class="flex flex-row md:flex-col overflow-x-auto md:overflow-y-auto p-2 gap-2 scrollbar-hide">
       </div>
   </div>
 
-  <div class="flex-1 flex flex-col bg-white min-h-0"> <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
-        <h2 class="text-lg md:text-xl font-bold text-gray-800">Chat</h2>
-        <a href="/" class="text-xs md:text-sm font-semibold text-red-500 hover:text-red-700">Leave</a>
+  <div class="flex-1 flex flex-col bg-white min-h-0 relative">
+    <div class="p-3 md:p-4 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10 shadow-sm">
+        <div class="flex flex-col">
+            <h2 class="text-sm md:text-xl font-bold text-gray-800 leading-tight">Live Chat</h2>
+            <span class="text-[10px] md:text-xs font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded mt-0.5">Room Code: {{code}}</span>
+        </div>
+        <a href="/" class="text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full hover:bg-red-100 transition-colors">Leave</a>
     </div>
 
-    <div class="messages flex-1 overflow-y-auto p-4 md:p-6 space-y-4" id="messages">
+    <div class="messages flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-gray-50/30" id="messages">
         </div>
 
-    <div class="p-3 md:p-4 bg-gray-50 border-t border-gray-100">
-      <div class="flex gap-2">
+    <div class="p-3 md:p-4 bg-white border-t border-gray-100">
+      <div class="flex items-center gap-2 max-w-4xl mx-auto">
         <input
           type="text"
-          placeholder="Message..."
+          placeholder="Type a message..."
           name="message"
           id="message"
-          class="flex-1 px-3 py-2 md:px-4 md:py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+          autocomplete="off"
+          class="flex-1 px-4 py-2.5 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all"
         />
         <button 
             type="button" 
             onClick="sendMessage()"
-            class="px-4 py-2 md:px-6 md:py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg active:scale-95 text-sm md:text-base"
+            class="p-2.5 md:px-6 md:py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-md transition-all active:scale-90"
         >
-          Send
+          <span class="hidden md:inline">Send</span>
+          <svg class="w-5 h-5 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
         </button>
       </div>
     </div>
@@ -52,13 +53,12 @@
   const userListDiv = document.getElementById("user-list");
   const userCountSpan = document.getElementById("user-count");
 
-  // Handle User List Updates
   socketio.on("user_list", (data) => {
     userCountSpan.innerText = data.names.length;
     userListDiv.innerHTML = data.names.map(name => `
-      <div class="flex items-center gap-3 p-2 rounded-lg ${name === currentUser ? 'bg-blue-50 border border-blue-100' : ''}">
-        <div class="w-2 h-2 rounded-full bg-green-500"></div>
-        <span class="text-sm font-medium ${name === currentUser ? 'text-blue-700' : 'text-gray-700'}">
+      <div class="flex items-center shrink-0 gap-2 p-1.5 md:p-2 rounded-lg ${name === currentUser ? 'bg-blue-50 border border-blue-100' : ''}">
+        <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+        <span class="text-[10px] md:text-sm font-medium ${name === currentUser ? 'text-blue-700' : 'text-gray-700'} whitespace-nowrap">
             ${name} ${name === currentUser ? '(You)' : ''}
         </span>
       </div>
@@ -71,7 +71,7 @@
 
     if (type === "notification") {
       const text = isSelf ? `You ${msg.replace("has ", "")}` : `${name} ${msg}`;
-      content = `<div class="text-center text-[11px] text-gray-400 italic my-2 w-full">${text}</div>`;
+      content = `<div class="text-center text-[10px] text-gray-400 italic my-2 w-full">${text}</div>`;
     } else {
       const displayName = isSelf ? "You" : name;
       const sideClass = isSelf ? "justify-end text-right" : "justify-start";
@@ -80,10 +80,10 @@
 
       content = `
         <div class="flex w-full ${sideClass}">
-            <div class="max-w-[70%] px-4 py-2 rounded-2xl shadow-sm ${bubbleClass}">
-                <div class="text-sm font-bold mb-1">${displayName}</div>
-                <div class="text-sm leading-relaxed">${msg}</div>
-                <div class="${mutedClass} text-[10px] mt-1">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+            <div class="max-w-[85%] md:max-w-[70%] px-3 py-2 rounded-2xl shadow-sm ${bubbleClass}">
+                <div class="text-[10px] font-bold mb-0.5 opacity-80">${displayName}</div>
+                <div class="text-sm leading-relaxed break-words">${msg}</div>
+                <div class="${mutedClass} text-[9px] mt-1 opacity-70">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
             </div>
         </div>
       `;
@@ -102,10 +102,10 @@
   {% endfor %}
 
   const sendMessage = () => {
-    const message = document.getElementById("message");
-    if (message.value == "") return;
-    socketio.emit("message", { data: message.value });
-    message.value = "";
+    const messageInput = document.getElementById("message");
+    if (messageInput.value.trim() == "") return;
+    socketio.emit("message", { data: messageInput.value });
+    messageInput.value = "";
   };
 
   document.getElementById("message").addEventListener("keydown", (e) => {

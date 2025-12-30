@@ -1,3 +1,32 @@
+/* Fix for mobile height issues and "leaking" */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent the body from scrolling, only the chat box should scroll */
+}
+
+/* Hide scrollbar for the mobile user list row */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ensure messages wrap properly on small screens */
+.messages div {
+  max-width: 85%; /* Give a bit more room on mobile */
+}
+
+@media (min-width: 768px) {
+  .messages div {
+    max-width: 70%;
+  }
+}
+
 .buttons {
   display: flex;
   flex-direction: column;
