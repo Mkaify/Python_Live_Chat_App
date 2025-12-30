@@ -4,3 +4,4 @@ python-socketio==5.15.0
 eventlet==0.33.3
 gunicorn==21.2.0
 setuptools
+python-dotenv==1.0.0
