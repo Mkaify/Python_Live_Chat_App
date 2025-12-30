@@ -1,9 +1,3 @@
-.content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .buttons {
   display: flex;
   flex-direction: column;
@@ -54,16 +48,79 @@ h2 {
   flex: 1;
 }
 
+/* Update the existing .text class and add alignment classes */
 .text {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 10px;
+  width: 100%;
 }
 
+.msg-left {
+  justify-content: flex-start;
+}
+
+.msg-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background-color: #e9e9eb; /* Default light gray for others */
+}
+
+.msg-right .message-content .msg-left {
+  background-color: #007bff; /* Blue background for "You" */
+  color: white;
+}
+
+/* Update the timestamp style */
 .muted {
-  font-size: 10px;
-  color: darkgray;
+  font-size: 11px; /* Matching the small notification-style text */
+  margin-top: 4px;
+  display: block;
+  color: #6c757d; /* Subtle gray */
+}
+
+.msg-right .muted {
+  color: rgba(255,255,255,0.85);
+}
+
+.messages {
+  overflow-y: auto;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification {
+  text-align: center;
+  font-size: 11px;
+  color: #888; /* Gray color to differentiate from messages */
+  margin: 10px 0;
+  width: 100%;
+  font-style: italic;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin: 0 10px;
+}
+
+/* Ensure the message container doesn't conflict with notifications */
+.message-container {
+  display: flex;
+  width: 100%;
+  margin: 5px 0;
+}
+
+/* Specific styling for your messages (right side) */
+.msg-right .message-bubble {
+  background-color: #007bff; /* Blue bubble */
+  color: white; /* White main text */
 }
