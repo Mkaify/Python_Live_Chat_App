@@ -74,16 +74,21 @@
       content = `<div class="text-center text-[10px] text-gray-400 italic my-2 w-full">${text}</div>`;
     } else {
       const displayName = isSelf ? "You" : name;
-      const sideClass = isSelf ? "justify-end text-right" : "justify-start";
-      const bubbleClass = isSelf ? "bg-blue-600 text-white rounded-br-none" : "bg-gray-100 text-gray-800 rounded-bl-none";
+      // Added 'pr-2' for others and 'pl-2' for self to handle screen edges better
+      const sideClass = isSelf ? "justify-end pr-1" : "justify-start pl-1";
+      const bubbleClass = isSelf 
+        ? "bg-blue-600 text-white rounded-2xl rounded-br-none" 
+        : "bg-gray-100 text-gray-800 rounded-2xl rounded-bl-none";
       const mutedClass = isSelf ? "text-blue-100" : "text-gray-500";
 
       content = `
-        <div class="flex w-full ${sideClass}">
-            <div class="max-w-[85%] md:max-w-[70%] px-3 py-2 rounded-2xl shadow-sm ${bubbleClass}">
-                <div class="text-[10px] font-bold mb-0.5 opacity-80">${displayName}</div>
-                <div class="text-sm leading-relaxed break-words">${msg}</div>
-                <div class="${mutedClass} text-[9px] mt-1 opacity-70">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        <div class="flex w-full ${sideClass} mb-1">
+            <div class="max-w-[85%] px-3 py-2 shadow-sm ${bubbleClass}">
+                <div class="text-[10px] font-bold mb-0.5 opacity-90">${displayName}</div>
+                <div class="text-sm leading-tight break-words">${msg}</div>
+                <div class="${mutedClass} text-[9px] mt-1 text-right italic">
+                    ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
             </div>
         </div>
       `;
