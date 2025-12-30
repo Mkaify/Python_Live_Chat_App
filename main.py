@@ -3,6 +3,7 @@ from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
 from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "hjhjsdahhds")
